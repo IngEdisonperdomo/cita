@@ -9,11 +9,26 @@ const App = () => {
     {id: '3', paciente: 'Redux', propietario: 'jose', sintomas: 'tos'},
   ]);
 
+  const eliminarPaciente = id => {
+    setCitas(citasActuales => {
+      return citasActuales.filter(cita => cita.id !== id);
+    });
+  };
+
   return (
     <View style={styles.contenedor}>
       <Text style={styles.titulo}>Administrador de citas</Text>
 
-      <FlatList data={cita} renderItem={({item}) => <Cita cita={item} />} />
+      <Text style={styles.titulo}>
+        {cita.length > 0 ? 'Administra tus citas' : 'No hay citas agrega una'}
+      </Text>
+
+      <FlatList
+        data={cita}
+        renderItem={({item}) => (
+          <Cita cita={item} eliminarPaciente={eliminarPaciente} />
+        )}
+      />
     </View>
   );
 };
@@ -26,6 +41,7 @@ const styles = StyleSheet.create({
   titulo: {
     color: '#fff',
     marginTop: 40,
+    marginBottom: 20,
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
