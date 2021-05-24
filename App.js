@@ -1,10 +1,19 @@
-import React from 'react';
-import {Text, StyleSheet, View} from 'react-native';
+import React, {useState} from 'react';
+import {Text, StyleSheet, View, FlatList} from 'react-native';
+import Cita from './componentes/Cita';
 
 const App = () => {
+  const [cita, setCitas] = useState([
+    {id: '1', paciente: 'React', propietario: 'edison', sintomas: ' no come'},
+    {id: '2', paciente: 'Native', propietario: 'perdomo', sintomas: 'fiebre'},
+    {id: '3', paciente: 'Redux', propietario: 'jose', sintomas: 'tos'},
+  ]);
+
   return (
     <View style={styles.contenedor}>
       <Text style={styles.titulo}>Administrador de citas</Text>
+
+      <FlatList data={cita} renderItem={({item}) => <Cita cita={item} />} />
     </View>
   );
 };
