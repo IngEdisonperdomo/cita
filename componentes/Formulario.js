@@ -10,8 +10,9 @@ import {
   ScrollView,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import shortid from 'shortid';
 
-const Formulario = () => {
+const Formulario = ({cita, setCitas, guardarMostrarForm}) => {
   const [paciente, guardarPaciente] = useState('');
   const [propietario, guardarPropietario] = useState('');
   const [telefono, guardarTelefono] = useState('');
@@ -62,6 +63,14 @@ const Formulario = () => {
       mostrarAlerta();
       return;
     }
+
+    const citas = {paciente, propietario, telefono, fecha, hora, sintomas};
+    citas.id = shortid.generate();
+
+    const crearCita = [...cita, citas];
+    setCitas(crearCita);
+
+    guardarMostrarForm(false);
   };
 
   const mostrarAlerta = () => {
@@ -169,6 +178,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#7d024e',
     marginVertical: 10,
+    marginBottom: 30,
   },
   textoSubmit: {
     color: '#fff',

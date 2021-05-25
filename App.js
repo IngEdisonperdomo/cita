@@ -6,6 +6,8 @@ import {
   FlatList,
   TouchableHighlight,
   Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import Cita from './componentes/Cita';
 import Formulario from './componentes/Formulario';
@@ -13,11 +15,7 @@ import Formulario from './componentes/Formulario';
 const App = () => {
   const [mostrarForm, guardarMostrarForm] = useState(false);
 
-  const [cita, setCitas] = useState([
-    {id: '1', paciente: 'React', propietario: 'edison', sintomas: 'no come'},
-    {id: '2', paciente: 'Native', propietario: 'perdomo', sintomas: 'fiebre'},
-    {id: '3', paciente: 'Redux', propietario: 'jose', sintomas: 'tos'},
-  ]);
+  const [cita, setCitas] = useState([]);
 
   const eliminarPaciente = id => {
     setCitas(citasActuales => {
@@ -29,6 +27,10 @@ const App = () => {
     guardarMostrarForm(!mostrarForm);
   };
 
+  const cerrarTeclado = () => {
+    Keyboard.dismiss;
+  };
+
   return (
     <View style={styles.contenedor}>
       <Text style={styles.titulo}>Administrador de citas</Text>
@@ -37,7 +39,9 @@ const App = () => {
         <TouchableHighlight
           onPress={() => mostrarFormulario()}
           style={styles.btnSubmit}>
-          <Text style={styles.textoSubmit}>Crear Cita</Text>
+          <Text style={styles.textoSubmit}>
+            {mostrarForm ? 'Cancelar Crear cita' : 'Crear Nueva Cita'}
+          </Text>
         </TouchableHighlight>
       </View>
 
@@ -45,7 +49,11 @@ const App = () => {
         {mostrarForm ? (
           <>
             <Text style={styles.titulo}>Crear nueva cita</Text>
-            <Formulario />
+            <Formulario
+              cita={cita}
+              setCitas={setCitas}
+              guardarMostrarForm={guardarMostrarForm}
+            />
           </>
         ) : (
           <>
