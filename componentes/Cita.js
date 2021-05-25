@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     paddingVertical: 20,
     paddingHorizontal: 10,
+    marginBottom: 10,
   },
   label: {
     fontWeight: 'bold',

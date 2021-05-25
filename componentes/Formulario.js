@@ -1,10 +1,24 @@
 import React, {useState} from 'react';
-import {Text, StyleSheet, View, TextInput, Button} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  TextInput,
+  Button,
+  TouchableHighlight,
+  Alert,
+  ScrollView,
+} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const Formulario = () => {
+  const [paciente, guardarPaciente] = useState('');
+  const [propietario, guardarPropietario] = useState('');
+  const [telefono, guardarTelefono] = useState('');
+  const [sintomas, guardarSintomas] = useState('');
   const [fecha, guardarFecha] = useState('');
   const [hora, guardarHora] = useState('');
+
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
 
@@ -30,33 +44,56 @@ const Formulario = () => {
     setTimePickerVisibility(false);
   };
 
-  const confirmarHora = date => {
-    console.warn('A date has been picked: ', date);
+  const confirmarHora = hora => {
+    const opciones = {hour: 'numeric', minute: '2-digit'};
+    guardarHora(hora.toLocaleString('en-US', opciones));
     hideTimePicker();
+  };
+
+  const crearNuevaCita = () => {
+    if (
+      paciente.trim() === '' ||
+      propietario.trim() === '' ||
+      telefono.trim() === '' ||
+      fecha.trim() === '' ||
+      hora.trim() === '' ||
+      sintomas.trim() === ''
+    ) {
+      mostrarAlerta();
+      return;
+    }
+  };
+
+  const mostrarAlerta = () => {
+    Alert.alert('Error', 'Todos los campos son obligatorio', [
+      {
+        text: 'Ok',
+      },
+    ]);
   };
 
   return (
     <>
-      <View style={styles.formulario}>
+      <ScrollView style={styles.formulario}>
         <View>
           <Text style={styles.label}>Paciente:</Text>
           <TextInput
             style={styles.input}
-            onChangeText={texto => console.log(texto)}
+            onChangeText={texto => guardarPaciente(texto)}
           />
         </View>
         <View>
           <Text style={styles.label}>Dueno:</Text>
           <TextInput
             style={styles.input}
-            onChangeText={texto => console.log(texto)}
+            onChangeText={texto => guardarPropietario(texto)}
           />
         </View>
         <View>
           <Text style={styles.label}>Telefono Contacto:</Text>
           <TextInput
             style={styles.input}
-            onChangeText={texto => console.log(texto)}
+            onChangeText={texto => guardarTelefono(texto)}
           />
         </View>
         <View>
@@ -94,11 +131,18 @@ const Formulario = () => {
           <Text style={styles.label}>Sintomas:</Text>
           <TextInput
             style={styles.input}
-            onChangeText={texto => console.log(texto)}
+            onChangeText={texto => guardarSintomas(texto)}
             multiline
           />
         </View>
-      </View>
+        <View>
+          <TouchableHighlight
+            onPress={() => crearNuevaCita()}
+            style={styles.btnSubmit}>
+            <Text style={styles.textoSubmit}>submit</Text>
+          </TouchableHighlight>
+        </View>
+      </ScrollView>
     </>
   );
 };
@@ -108,7 +152,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingHorizontal: 20,
     paddingVertical: 10,
-    marginHorizontal: '2.5%',
   },
   label: {
     fontWeight: 'bold',
@@ -121,6 +164,16 @@ const styles = StyleSheet.create({
     borderColor: '#e1e1e1',
     borderWidth: 1,
     borderStyle: 'solid',
+  },
+  btnSubmit: {
+    padding: 10,
+    backgroundColor: '#7d024e',
+    marginVertical: 10,
+  },
+  textoSubmit: {
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
